@@ -1,0 +1,184 @@
+﻿@using Demo_Web_Mvc.Models
+@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section view_title_ad
+{
+   Trang Chỉnh Sửa Sản Phẩm: @Model.tensp 
+}
+@section css_ad
+{
+    <link href="~/Areas/Admin/assets/bootstrap-touchspin-master/dist/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+    <link href="~/Areas/Admin/assets/bootstrap-select/dist/css/bootstrap-select.min.css" rel="stylesheet" />
+}
+@section js_ad
+{
+    <script src="~/Areas/Admin/assets/bootstrap.file-input.js"></script>
+    <script src="~/Areas/Admin/assets/bootstrap-touchspin-master/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <script src="~/Areas/Admin/assets/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+
+    <script src="~/assets/jquery%20-validation/dist/jquery.validate.min.js"></script>
+<script type="text/javascript">
+    $.validator.addMethod("imageOnly", function (value, element) {
+        return this.optional(element) || /^.+\.(jpg|JPG|png|PNG)$/.test(value);
+    });
+    $('.selectpicker').selectpicker();
+    $('#Gia').TouchSpin({
+        min: 0,
+        max: 9999999999,
+        //step: 500,
+        verticalbuttons: true
+    });
+    $('#Soluong').TouchSpin({
+        min: 1,
+        verticalbuttons: true
+    });
+    $('input[type=file]').bootstrapFileInput();
+    $('.file-inputs').bootstrapFileInput();
+
+    $('#addProductForm').validate({
+        rules: {
+            TENSP: {
+                required: true,
+            },
+        },
+        messages:
+            {
+                TENSP: {
+                    required: "Chưa nhập tên sản phẩm.",
+                },
+            },
+        errorElenment: 'span',
+        errorClass: 'help-block',
+        highlight: function (element) {
+            $(element)
+            .closest('.form-group').addClass('has-error');
+        },
+        success: function (lable) {
+            lable.closest('.form-group').removeClass('has-error');
+        },
+    });
+</script>
+
+}
+<form class="form-horizontal" method="post" action="" id="addProductForm" enctype="multipart/form-data">
+    @*chu y quan trong enctype ="multipart/form-data"*@
+<div class="form-group">
+    <input type="hidden" class="form-control" name="masp" value="@Model.spid" />
+    <input type="hidden" class="form-control" name="Link" value="@Model.linkanh" />
+    <label for="txtTenSP" class="col-sm-2 control-label">Tên sản phẩm: </label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" id="TENSP" name="TENSP" value="@Model.tensp" />
+    </div>
+    <label for="txtTenSP" class="col-sm-2 control-label">Danh Mục: </label>
+    <div class="col-sm-4">
+        <select class=" form-control selectpicker show-tick" name="MATHELOAI">
+            <option value="@Model.tl.MATL">@Model.tl.TENTHELOAI</option>
+            @foreach (THELOAI tl in ViewBag.Categories)
+            {
+                <option @if(Model.tl.MATL == tl.MATL){<text> class="hidden"</text>} value="@tl.MATL">@tl.TENTHELOAI</option>
+            }
+        </select>
+    </div>
+</div>
+<div class="form-group">
+    <label for="txtTenSP" class="col-sm-2 control-label">Hình Ảnh: </label>
+    <div class="col-sm-4">
+        <input type="file" id="LinkAnh" name="LinkAnh" accept="image/PNG, image/jpg, image/png, image/JPG" data-filename-placement="inside" />
+           Hình cũ:<img src="~/hinhanh/@Model.linkanh" style="width:50px; height:50px;" />
+    </div>
+    <label for="txtTenSP" class="col-sm-2 control-label">Số Lượng: </label>
+    <div class="col-sm-2">
+        <input type="text" class="form-control" id="Soluong" name="Soluong" value="@Model.soluong" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="txtTenSP" class="col-sm-2 control-label">Giá: </label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" id="Gia" name="Gia" value="@Model.gia" />
+    </div>
+    <label for="txtTenSP" class="col-sm-2 control-label">Nhà Sản Xuất: </label>
+    <div class="col-sm-4">
+        <select class="form-control selectpicker" name="MANHASANXUAT">
+            <option value="@Model.nsx.MANSX">@Model.nsx.TENNSX</option>
+            @foreach (NHASANXUAT nsx in ViewBag.nhasanxuat_sp)
+            {
+                <option @if(Model.nsx.MANSX == nsx.MANSX ){<text> class="hidden"</text>} value="@nsx.MANSX">@nsx.TENNSX</option>
+            }
+        </select>
+    </div>
+</div>
+<hr />
+<div class="form-group">
+    <label for="txtTenSP" class="col-sm-2 control-label">Màn Hình: </label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" id="ManHinh" name="ManHinh" value="@Model.manhinh"/>
+    </div>
+    <label for="txtTenSP" class="col-sm-2 control-label">Hệ Điều Hành: </label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" id="HeDieuHanh" name="HeDieuHanh" value="@Model.hdh"/>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="txtTenSP" class="col-sm-2 control-label">Camera trước: </label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" id="CamTruoc" name="CamTruoc" value="@Model.camtruoc" />
+    </div>
+    <label for="txtTenSP" class="col-sm-2 control-label">Camera sau: </label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" id="CamSau" name="CamSau" value="@Model.camsau" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="txtTenSP" class="col-sm-2 control-label">CPU: </label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" id="CPU" name="CPU" value="@Model.camtruoc" />
+    </div>
+    <label for="txtTenSP" class="col-sm-2 control-label">Ram: </label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" id="Ram" name="Ram" value="@Model.ram" />
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="txtTenSP" class="col-sm-2 control-label">Hổ Trợ Thẻ Nhớ: </label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" id="HoTroTheNho" name="HoTroTheNho" value="@Model.hotrothenho" />
+    </div>
+    <label for="txtTenSP" class="col-sm-2 control-label">Thẻ Sim: </label>
+    <div class="col-sm-4">
+        <input type="text" class="form-control" id="TheSim" name="TheSim" value="@Model.sim" />
+    </div>
+</div>
+
+    <div class="form-group">
+        <label for="txtTenSP" class="col-sm-2 control-label">Dung Lượng Pin: </label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="DungLuongPin" name="DungLuongPin" value="@Model.pin" />
+        </div>
+        <label for="txtTenSP" class="col-sm-2 control-label">Bộ Nhớ Trong: </label>
+        <div class="col-sm-4">
+            <input type="text" class="form-control" id="BoNhoTrong" name="BoNhoTrong" value="@Model.bonhotrong" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="txtTenSP" class="col-sm-2 control-label">Chức Năng Khác: </label>
+        <div class="col-sm-10">
+            <input type="text" class="form-control" id="ChucNangKhac" name="ChucNangKhac" value="@Model.chucnangkhac" />
+        </div>
+    </div>
+
+<div class="form-group">
+    <div class="col-sm-10 col-sm-offset-2">
+        <button type="submit" class="btn btn-danger">
+            <i class="fa fa-check"></i>&nbsp;Lưu
+        </button>
+        <a href="@Url.Action("SanPhamALLAD", "SanPhamAD", new { Area = "Admin"})" class="btn btn-success">
+            <i class="fa fa-reply"></i>&nbsp; Danh Sách Sản Phẩm
+        </a>
+    </div>
+</div>
+</form>

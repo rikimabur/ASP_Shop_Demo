@@ -1,0 +1,173 @@
+﻿@using Demo_Web_Mvc.Models;
+@section view_title
+{
+   
+    <a href="javascript:;"  id="thongtin_tk"> Thông tin @Model.TenDangNhap</a>
+    <a href="javascript:;" style="padding-left:100px;" id="RetPass">Thay Đổi Mật Khẩu</a>
+    <a href="javascript:;" style="padding-left:100px;" id="order_id">Thông Tin Đơn Hàng</a>  
+}
+@section css
+{
+    <link href="~/assets/bootstrap-touchspin-master/dist/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+}
+@section js
+{   
+
+    <script src="~/public/ThongTinDonHang_ajax.js"></script>
+    <script src="~/assets/bootstrap-touchspin-master/dist/jquery.bootstrap-touchspin.min.js"></script>
+
+
+    <script src="~/assets/jquery%20-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#RetPass').on('click', function () {
+                $('#myModal').modal('show');
+            });
+        });
+    </script>
+    <script>
+        // kiem tra bang validator
+        $('#profile-from').validate({
+            rules: {//luật
+                MKold: {
+                    required: true
+                },
+                MK: {
+                    required: true,
+                    minlength: 5
+                },
+                NhapMK: {
+                    required: true, equalTo: "#MK"
+                },
+            },
+            messages: {// thông báo
+                MKold: {
+                    required: 'Chưa nhập mật khẩu cũ.'
+                },
+                MK: {
+                    required: 'Chưa nhập mật khẩu mới.',
+                    minlength: 'Mật Khẩu ít nhất 5 kí tự.'
+                },
+                NhapMK: {
+                    required: 'Nhập lại mật khẩu mới.',
+                    equalTo: 'Nhập sai mật khẩu'
+                },
+            },
+            errorElenment: 'span',
+            errorClass: 'help-block',
+            highlight: function (element) {// hiển thị nâng cao thêm class sau form-group has-error
+                $(element)
+                .closest('.form-group').addClass('has-error');
+            },
+            success: function (lable) {
+                lable.closest('.form-group').removeClass('has-error');
+            },
+            submitHandler: function (form) {
+                var dataObject = {
+                    MaTK: $('#MaTK').val(),
+                    Oldpass: $('#MKold').val(),
+                    NewPass: $('#MK').val(),
+                };
+                $.ajax({
+                    url: "/Account/profilepass",
+                    type: "POST",
+                    data: dataObject,
+                    datatype: "Json",
+                    success: function (data) {
+                        alert(data);
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+                form.submit();
+            }
+        });
+
+    </script>
+}
+@model TAIKHOAN
+<div class="row account_hienthi">
+    <label class="col-sm-3 text-success">Tên đăng nhập</label>
+    <div class="col-sm-7">
+        <label class="col-sm-3 text-primary">@Model.TenDangNhap</label>
+    </div>
+    <label class="col-sm-3 text-success">Họ Tên</label>
+    <div class="col-sm-7">
+        <label class="col-sm-3 text-primary">@Model.HoTen</label>
+    </div>
+    <label class="col-sm-3 text-success">Ngày Sinh</label>
+    <div class="col-sm-7">
+        <label class="col-sm-3 text-primary">@Model.NgaySinh.ToShortDateString()</label>
+    </div>
+    <label class="col-sm-3 text-success">Email</label>
+    <div class="col-sm-7">
+        <label class="col-sm-3 text-primary">@Model.Email</label>
+    </div>
+</div>
+<!-- Modal -->
+<div class="row">
+
+    <div class="modal fade col-lg-8" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form class="form-horizontal" method="post" action="" id="profile-from">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title text-success" id="myModalLabel">Thay Đổi Mật Khẩu</h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="MaTK" name="MaTK" value="@Model.MaTK" />
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Mật Khẩu Cũ</label>
+                            <div class="col-sm-7">
+                                <input type="password" class="form-control" id="MKold" placeholder="Mật Khẩu Cũ" name="MKold">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Mật Khẩu Mới</label>
+                            <div class="col-sm-7">
+                                <input type="password" class="form-control" id="MK" placeholder="Tối thiểu 5 kí tự" name="MK">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Nhập Lại Mật Khẩu</label>
+                            <div class="col-sm-7">
+                                <input type="password" class="form-control" id="NhapMK" placeholder="Nhập Lại Mật Khẩu" name="NhapMK">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="savepass">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row" id="thongtin">
+
+</div>
+<div class="row" id="thongtinchitiet">
+
+</div>
+<script type="text/javascript">
+    $(".account_hienthi").addClass('hidden');
+    var check = true;
+    $("#thongtin_tk").on('click', function () {
+        if (check == true)
+        {
+            $(".account_hienthi").removeClass('hidden');
+            $(".account_hienthi").slideDown("slow");
+            check = false;
+        }
+        else
+        {
+            $(".account_hienthi").slideUp("slow");
+            check = true;
+        }
+    });
+    
+</script>

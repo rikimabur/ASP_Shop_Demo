@@ -1,0 +1,201 @@
+﻿@using Demo_Web_Mvc.Models
+@model List<CartItemModels>
+@section view_title
+{
+    Giỏ Hàng
+}
+@section css
+{
+<link href="~/assets/bootstrap-touchspin-master/dist/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+}
+@section js
+{
+<script src="~/assets/bootstrap-touchspin-master/dist/jquery.bootstrap-touchspin.min.js"></script>
+
+   <script type="text/javascript">
+       $(".quantity").TouchSpin(
+        {
+            min: 1,
+            verticalbuttons:true
+        });
+    </script>
+
+     <script type="text/javascript">
+         $("input#quantity").change(function () {
+             var proid = $(this).closest('tr').find("input#txt_MaSP").val();
+             var soluong = $(this).val();
+             var soluong_order = $("a#load_cart span").text();
+             var gia = $('tr.' + proid + ' td input.quantity').val();
+             $.ajax({
+                 url: '/Cart/UpdateQuanity',
+                 data: { masp:proid,quantity:soluong },
+                 dataType: 'json',
+                 type: 'Post',
+                 success: function (data) {
+                     if (data.Status == 1)
+                     {
+                         alert("Số Lượng Tối Đa Bạn Có Thể Đặt Là:" + data.message);
+                         $('tr.' + proid + ' td input.quantity').val(data.message);
+                         $('tr.' + proid + ' td.gia_sp span').html(data.TongTien);
+                         $('tr#tongtien_thanhtoan  td.tongtien_order h4').html(data.TT_thanhtoan);
+                         $("a#load_cart span").html(data.curent_sl);
+                     }
+                     else if(data.Status == 0)
+                     {
+                         $('tr.' + proid + ' td.gia_sp span').html(data.TongTien);
+                         $('tr#tongtien_thanhtoan  td.tongtien_order h4').html(data.TT_thanhtoan);
+                         $("a.load_cart span").html(data.curent_sl);
+                     }     
+                 }
+                 ,
+                 err: function ()
+                 {
+                     alert('Lỗi! Vui Lòng Nhấn F5.');
+                 }
+             });
+         });
+        $('.removeItem').on('click', function () {
+            var proid = $(this).data('proid');
+            var soluong = $(this).val();
+            var rowid = $(this).parent().parent();
+            var soluong_giohang = $("a#load_cart span").text();
+            var url = '/Cart/RemoveItem/' + proid;
+            var count_row = $('table#table tr').length;
+            var gia_curent = 
+            $.ajax({
+                url: url,
+                type: 'post',
+                dataType: 'json',
+                success: function (data) {
+                    if (data.status == true)
+                    {
+                        rowid.remove();
+                        $("a#load_cart span").html(data.curent_sl);
+                        $('tr#tongtien_thanhtoan  td.tongtien_order h4').html(data.TT_thanhtoan);
+                        if (count_row == 3) {
+                            $('div.an_hien').addClass("hidden");
+                            $('div#result').removeClass("hidden");
+                            $('div#result').html('<h2 style="color:red; padding-bottom:400px;" class="text-center">Giỏ Hàng Của Bạn Rỗng</h2>');
+                        }
+                    }
+                },
+                error: function () {
+                    alert("Xóa Không Thành Công");
+                }
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $('.updateItem').on('click', function () {
+            var proid = $(this).data('proid');
+            var quantity = $('#txtQ_' + proid).val();
+            $('#txtUpdateId').val(proid);
+            $('#txtUpdateQ').val(quantity);
+            $('#frmUpdateItem').submit();
+        });
+    </script>
+    <script>
+        $('.updateItemall').on('click', function () {
+            var listproduct = $('.quantity');
+            var cartlist = [];
+            $.each(listproduct, function (i, item) {
+                cartlist.push({
+                    Quantity :$(item).val(),
+                    MASP: $(item).data('id'),
+                });
+            });
+            $.ajax({
+                url: '/Cart/UpdateAll',
+                data: {cartModel:JSON.stringify(cartlist)},
+                dataType: 'json',
+                type: 'Post',
+                success: function (res)
+                {
+                    if (res.status == true) {
+                        window.location.href = "/Cart/index";
+                    }
+                }
+            })
+        });
+    </script>
+    
+}
+@if(Model.Count==0)
+{
+    <div class="row">
+        <h2 style="color:red; padding-bottom:400px;" class="text-center">Giỏ Hàng Của Bạn Rỗng</h2>
+    </div>
+}
+else
+{
+    @*<form method="post" id="frmUpdateItem" action="@Url.Action("UpdateItem", "Cart")">
+        <input type="hidden" name="masp" id="txtUpdateId" />
+        <input type="hidden" name="quantity" id="txtUpdateQ" />
+    </form>*@
+   <div class="row hidden" id="result">
+    </div>
+    <div class="row an_hien" id="an_hien">
+        <div class="col-lg-12">
+            <table class="table table-hover" id="table">
+                <thead>
+                    <tr>
+                        <th class="col-sm-1 ">STT</th>
+                        <th class="col-sm-4 ">Sản Phẩm</th>
+                        <th class="col-sm-2 ">Giá</th>
+                        <th class="col-sm-2 ">Số Lượng</th>
+                        <th class="col-sm-2 ">Thành Tiền</th>
+                        <th class="col-sm-1">&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{int i = 0;}
+                    @foreach (var cim in Model)
+                    {
+                        <tr class="@cim.sp.MASP">
+                            <td>@{i = i + 1;} @i</td>
+                            <td><img src="~/hinhanh/@cim.sp.Link" style="width:40px; height:40px;">@cim.sp.TENSP</td>
+                            <td>@string.Format("{0:N0},000 đ", cim.spct.Gia)</td>
+                            <td>
+                                <input type="hidden" id="txt_MaSP" value="@cim.sp.MASP" />
+                                <input type="text" value="@cim.Item.Quantity" class="quantity" @*id="txtQ_@cim.Item.MASP"*@ id="quantity" data-id="@cim.Item.MASP" />
+                            </td>
+                            <td class="gia_sp"><span>@string.Format("{0:N0},000 đ", cim.spct.Gia * cim.Item.Quantity)</span> </td>
+                            <td class="left">
+                                <a class="btn btn-danger btn-xs removeItem" href="javascript:;" data-proid="@cim.sp.MASP" role="button" title="Xóa">
+                                    <i class="fa fa-remove"></i>
+                                </a>
+                                @*<a class="btn btn-primary btn-xs updateItem" href="javascript:;" data-proid="@cim.sp.MASP" role="button" title="Cap Nhat">
+                                        <i class="fa fa-check"></i>
+                                    </a>*@
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr id="tongtien_thanhtoan">
+                        <td colspan="2">
+                            <form method="post" id="frmCheckout" action="@Url.Action("Checkout","Cart")">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a class="btn btn-success" href="@Url.Action("Index","Home")" role="button">
+                                            <i class="fa fa-mail-reply"></i>Tiếp tục mua hàng
+                                        </a>
+                                        <button type="submit" class="btn btn-danger">
+                                            <i class="fa fa-check"></i>Thanh toán
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                        <td>
+                            &nbsp;
+                        </td>
+                        <td> <h4>Tổng Tiền:</h4></td>
+                        <td class="text-danger tongtien_order" colspan="2"><h4>@string.Format("{0:N0},000 đ", ViewBag.Total)</h4></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+    </div>
+}

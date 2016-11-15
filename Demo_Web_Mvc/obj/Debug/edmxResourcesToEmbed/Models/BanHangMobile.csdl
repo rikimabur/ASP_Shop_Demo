@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="DAMobileModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="DAMobileEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="DONHANGs" EntityType="DAMobileModel.DONHANG" />
+    <EntitySet Name="DONHANGCHITIETs" EntityType="DAMobileModel.DONHANGCHITIET" />
+    <EntitySet Name="NHASANXUATs" EntityType="DAMobileModel.NHASANXUAT" />
+    <EntitySet Name="SANPHAMs" EntityType="DAMobileModel.SANPHAM" />
+    <EntitySet Name="SANPHAMCHITIETs" EntityType="DAMobileModel.SANPHAMCHITIET" />
+    <EntitySet Name="TAIKHOANs" EntityType="DAMobileModel.TAIKHOAN" />
+    <EntitySet Name="THELOAIs" EntityType="DAMobileModel.THELOAI" />
+    <AssociationSet Name="FK_DONHANG_TAIKHOAN" Association="DAMobileModel.FK_DONHANG_TAIKHOAN">
+      <End Role="TAIKHOAN" EntitySet="TAIKHOANs" />
+      <End Role="DONHANG" EntitySet="DONHANGs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DONHANGCHITIET_DONHANG" Association="DAMobileModel.FK_DONHANGCHITIET_DONHANG">
+      <End Role="DONHANG" EntitySet="DONHANGs" />
+      <End Role="DONHANGCHITIET" EntitySet="DONHANGCHITIETs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DONHANGCHITIET_SANPHAM" Association="DAMobileModel.FK_DONHANGCHITIET_SANPHAM">
+      <End Role="SANPHAM" EntitySet="SANPHAMs" />
+      <End Role="DONHANGCHITIET" EntitySet="DONHANGCHITIETs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SANPHAM_NHASANXUAT" Association="DAMobileModel.FK_SANPHAM_NHASANXUAT">
+      <End Role="NHASANXUAT" EntitySet="NHASANXUATs" />
+      <End Role="SANPHAM" EntitySet="SANPHAMs" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="DONHANG">
+    <Key>
+      <PropertyRef Name="MaDH" />
+    </Key>
+    <Property Name="MaDH" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NgayNhap" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TongTien" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="MAKH" Type="Int32" Nullable="false" />
+    <Property Name="ThanhToan" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="TAIKHOAN" Relationship="DAMobileModel.FK_DONHANG_TAIKHOAN" FromRole="DONHANG" ToRole="TAIKHOAN" />
+    <NavigationProperty Name="DONHANGCHITIETs" Relationship="DAMobileModel.FK_DONHANGCHITIET_DONHANG" FromRole="DONHANG" ToRole="DONHANGCHITIET" />
+  </EntityType>
+  <EntityType Name="DONHANGCHITIET">
+    <Key>
+      <PropertyRef Name="MAID" />
+    </Key>
+    <Property Name="MAID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaDH" Type="Int32" Nullable="false" />
+    <Property Name="MaSP" Type="Int32" Nullable="false" />
+    <Property Name="SoLuong" Type="Int32" Nullable="false" />
+    <Property Name="Gia" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="TongTien" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <NavigationProperty Name="DONHANG" Relationship="DAMobileModel.FK_DONHANGCHITIET_DONHANG" FromRole="DONHANGCHITIET" ToRole="DONHANG" />
+    <NavigationProperty Name="SANPHAM" Relationship="DAMobileModel.FK_DONHANGCHITIET_SANPHAM" FromRole="DONHANGCHITIET" ToRole="SANPHAM" />
+  </EntityType>
+  <EntityType Name="NHASANXUAT">
+    <Key>
+      <PropertyRef Name="MANSX" />
+    </Key>
+    <Property Name="MANSX" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TENNSX" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="bixoa" Type="Int32" />
+    <NavigationProperty Name="SANPHAMs" Relationship="DAMobileModel.FK_SANPHAM_NHASANXUAT" FromRole="NHASANXUAT" ToRole="SANPHAM" />
+  </EntityType>
+  <EntityType Name="SANPHAM">
+    <Key>
+      <PropertyRef Name="MASP" />
+    </Key>
+    <Property Name="MASP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TENSP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Link" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="MATHELOAI" Type="Int32" />
+    <Property Name="MANHASANXUAT" Type="Int32" />
+    <Property Name="Ngay" Type="DateTime" Precision="3" />
+    <Property Name="SoLuotXem" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="bixoa" Type="Int32" />
+    <NavigationProperty Name="DONHANGCHITIETs" Relationship="DAMobileModel.FK_DONHANGCHITIET_SANPHAM" FromRole="SANPHAM" ToRole="DONHANGCHITIET" />
+    <NavigationProperty Name="NHASANXUAT" Relationship="DAMobileModel.FK_SANPHAM_NHASANXUAT" FromRole="SANPHAM" ToRole="NHASANXUAT" />
+  </EntityType>
+  <EntityType Name="SANPHAMCHITIET">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MASP" Type="Int32" Nullable="false" />
+    <Property Name="ManHinh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HeDieuHanh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CamSau" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CamTruoc" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CPU" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Ram" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="BoNhoTrong" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="TheSim" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HoTroTheNho" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DungLuongPin" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="ChucNangKhac" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Soluong" Type="Int32" />
+    <Property Name="SoLuongBan" Type="Int32" />
+    <Property Name="Gia" Type="Decimal" Precision="19" Scale="4" />
+  </EntityType>
+  <EntityType Name="TAIKHOAN">
+    <Key>
+      <PropertyRef Name="MaTK" />
+    </Key>
+    <Property Name="MaTK" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TenDangNhap" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MatKhau" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HoTen" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="bixoa" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="DONHANGs" Relationship="DAMobileModel.FK_DONHANG_TAIKHOAN" FromRole="TAIKHOAN" ToRole="DONHANG" />
+  </EntityType>
+  <EntityType Name="THELOAI">
+    <Key>
+      <PropertyRef Name="MATL" />
+    </Key>
+    <Property Name="MATL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TENTHELOAI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <Association Name="FK_DONHANG_TAIKHOAN">
+    <End Type="DAMobileModel.TAIKHOAN" Role="TAIKHOAN" Multiplicity="1" />
+    <End Type="DAMobileModel.DONHANG" Role="DONHANG" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TAIKHOAN">
+        <PropertyRef Name="MaTK" />
+      </Principal>
+      <Dependent Role="DONHANG">
+        <PropertyRef Name="MAKH" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DONHANGCHITIET_DONHANG">
+    <End Type="DAMobileModel.DONHANG" Role="DONHANG" Multiplicity="1" />
+    <End Type="DAMobileModel.DONHANGCHITIET" Role="DONHANGCHITIET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DONHANG">
+        <PropertyRef Name="MaDH" />
+      </Principal>
+      <Dependent Role="DONHANGCHITIET">
+        <PropertyRef Name="MaDH" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DONHANGCHITIET_SANPHAM">
+    <End Type="DAMobileModel.SANPHAM" Role="SANPHAM" Multiplicity="1" />
+    <End Type="DAMobileModel.DONHANGCHITIET" Role="DONHANGCHITIET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SANPHAM">
+        <PropertyRef Name="MASP" />
+      </Principal>
+      <Dependent Role="DONHANGCHITIET">
+        <PropertyRef Name="MaSP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SANPHAM_NHASANXUAT">
+    <End Type="DAMobileModel.NHASANXUAT" Role="NHASANXUAT" Multiplicity="0..1" />
+    <End Type="DAMobileModel.SANPHAM" Role="SANPHAM" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NHASANXUAT">
+        <PropertyRef Name="MANSX" />
+      </Principal>
+      <Dependent Role="SANPHAM">
+        <PropertyRef Name="MANHASANXUAT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

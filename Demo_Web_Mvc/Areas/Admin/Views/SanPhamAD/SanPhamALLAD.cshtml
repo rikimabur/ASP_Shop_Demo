@@ -1,0 +1,80 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section view_title_ad
+{
+    Quản Lý Sản Phẩm
+}
+@section css_ad{
+<link href="~/public/filter_table_ad.css" rel="stylesheet" />
+}
+@section js_ad{
+<script src="~/public/filter_table_ad.js"></script>
+}
+@using Demo_Web_Mvc.Models;
+@model List<SP_CTModel>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <a href="@Url.Action("CreateSanPham", "SanPhamAD", new { Area = "Admin"})">Thêm mới sản phẩm</a>
+                    <div>
+                        <p class="text-right text-primary">Có @ViewBag.SoSP sản phẩm</p><div>
+                            <div class="filterable">
+                                <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Chọn</button>
+                                <table class="table">
+                                    <thead>
+                                        <tr class="filters">
+                                            <th><input type="text" class="form-control" id ="SoLuong" placeholder="Mã SP" disabled /></th>
+                                            <th><input type="text" class="form-control" placeholder="Tên Sản Phẩm" disabled/></th>
+                                            <th>Hình Ảnh</th>
+                                            <th><input type="text" class="form-control" id="Gia" placeholder="Giá(VNĐ)" disabled/></th>
+                                            <th><input type="text" class="form-control" placeholder="Nhà Sản Xuất" disabled/></th>
+                                            <th><input type="text" class="form-control" placeholder="Thể Loại" disabled/></th>
+                                            <th><input type="text" class="form-control" placeholder="Số Lượng" disabled /></th>
+                                            <th>&nbsp;</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (SP_CTModel sp in Model)
+                                        {
+                                            <tr class="@if(sp.bixoa == 1){<text> text-danger</text>}">
+                                                <td class="col-lg-1 col-xs-1">@sp.spid</td>
+                                                <td class="col-lg-2 col-xs-2">@sp.tensp</td>
+                                                <td class="col-lg-1 col-xs-1"><img src="~/hinhanh/@sp.linkanh" style="width:50px; height:50px;" /></td>
+                                                <td class="col-lg-1 col-xs-1">@string.Format("{0:N0},000", sp.gia)</td>
+                                                <td class="col-lg-2 col-xs-2">@sp.nsx.TENNSX</td>
+                                                <td class="col-lg-2 col-xs-2">@sp.tl.TENTHELOAI</td>
+                                                <td class="col-lg-1 col-xs-1">@sp.soluong</td>
+                                                <td class="col-lg-2 col-xs-2">
+                                                    <a href="@Url.Action("ChitietSanPham", "SanPhamAD", new {Area="Admin", masp = sp.spid, bx = sp.bixoa })"> Chi Tiết</a>
+                                                    | <a href="@Url.Action("EditSanPhamAD", "SanPhamAD", new { masp = sp.spid })"> Chỉnh Sửa</a>
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <nav>
+        <ul class="pagination">
+            <li @if (ViewBag.curPage == 1) { <text> class="disabled" </text>    }><a href="?curPage=@ViewBag.PrevPage" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+            @for (int i = 1; i <= ViewBag.Pages; i++)
+            {
+                <li @if (i == ViewBag.curPage) { <text> class="active" </text>   }>
+                    <a href="?curPage=@i ">@i</a>
+                </li>
+            }
+            <li @if (ViewBag.NextCuoi == ViewBag.curPage) { <text> class="disabled" </text>    }><a href="?curPage=@ViewBag.NextPage" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+        </ul>
+
+    </nav>
+</div>

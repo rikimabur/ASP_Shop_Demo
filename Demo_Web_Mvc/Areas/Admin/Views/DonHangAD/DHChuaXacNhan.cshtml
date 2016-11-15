@@ -1,0 +1,105 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+@section view_title_ad
+{
+    Quản Lý Đơn Hàng Chưa Thanh Toán
+}
+@section css_ad
+{
+<link href="~/public/filter_table_ad.css" rel="stylesheet" />
+}
+@section js_ad
+{
+<script src="~/public/filter_table_ad.js"></script>
+
+
+
+    <script>
+        $('.deletedh').on('click', function () {
+            var proid = $(this).data('iddh');
+            $.ajax({
+                url: "/Admin/DonHangAD/DeleteDH",
+                type: "POST",
+                data: {dhid : proid},
+                dataType: "Json",
+                success: function (res)
+                {
+                    if (res.status == true) {
+                        window.location.href = "/Admin/DonHangAD/DHChuaXacNhan";
+                    }
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        });
+
+    </script>
+}
+@using Demo_Web_Mvc.Models;
+@model List<DONHANG>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <div class="filterable">
+                        <button class="btn btn-default btn-xs btn-filter"><span class="glyphicon glyphicon-filter"></span> Chọn</button>
+                        <table class="table table-hover" id="dataTables-example">
+                            <thead>
+                                <tr class="filters">
+                                    <th><input type="text" class="form-control" placeholder="Mã Đơn Hàng" disabled /></th>
+                                    <th><input type="text" class="form-control" placeholder="Ngày Mua" disabled /></th>
+                                    <th><input type="text" class="form-control" placeholder="Tên Khách Hàng " disabled /></th>
+                                    <th><input type="text" class="form-control" placeholder="Tổng Tiền" disabled /></th>
+                                    <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (DONHANG dh in Model)
+                                {
+                                    <tr class="odd gradeX">
+                                        <td class="col-lg-2">@dh.MaDH</td>
+                                        <td class="col-lg-2">@dh.NgayNhap</td>
+                                        <td class="col-lg-2">@dh.TAIKHOAN.TenDangNhap</td>
+                                        <td class="col-lg-2">@string.Format("{0:N0},000 đ", dh.TongTien)</td>
+                                        <td class="col-lg-3">
+                                            <a href="@Url.Action("ChiTietDonHangAD", "DonHangAD", new { Area = "Admin", dhid = dh.MaDH})">Chi Tiết</a> |
+                                            <a href="@Url.Action("ThanhToanAD", "DonHangAD", new { Area = "Admin", dhid = dh.MaDH })">Thanh Toán</a> |
+                                            <a href="javascript:;" class="deletedh" data-iddh="@dh.MaDH">Xóa</a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                       </div>
+                    </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <nav>
+            <ul class="pagination">
+                <li @if (ViewBag.curPage == 1) { <text> class="disabled" </text>      }><a href="?curPage=@ViewBag.PrevPage" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                @for (int i = 1; i <= ViewBag.Pages; i++)
+                {
+                    <li @if (i == ViewBag.curPage) { <text> class="active" </text>     }>
+                        <a href="?curPage=@i ">@i</a>
+                    </li>
+                }
+                <li @if (ViewBag.NextCuoi == ViewBag.curPage) { <text> class="disabled" </text>      }><a href="?curPage=@ViewBag.NextPage" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+            </ul>
+
+        </nav>
+    </div>
+
+</div>

@@ -1,0 +1,193 @@
+﻿@using Demo_Web_Mvc.Models
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section view_title_ad
+{
+    Quản Lý Thành Viên
+}
+@section js_ad
+{
+
+<script src="~/assets/jquery%20-validation/dist/jquery.validate.min.js"></script>
+<script type="text/javascript">
+
+    $('.RetPassad').on('click', function () {
+        var matk = $(this).data('idmatk');
+        $('#myModal1').modal('show');
+        $('#MaTK').val(matk);
+    });
+    // kiem tra bang validator
+    $('#profile-from1').validate({
+        rules: {//luật
+            MKold: {
+                required: true
+            },
+            MK: {
+                required: true,
+                minlength: 5
+            },
+            NhapMK: {
+                required: true, equalTo: "#MK"
+            },
+        },
+        messages: {// thông báo
+            MKold: {
+                required: 'Chưa nhập mật khẩu cũ.'
+            },
+            MK: {
+                required: 'Chưa nhập mật khẩu mới.',
+                minlength: 'Mật Khẩu ít nhất 5 kí tự.'
+            },
+            NhapMK: {
+                required: 'Nhập lại mật khẩu mới.',
+                equalTo: 'Nhập sai mật khẩu'
+            },
+        },
+        errorElenment: 'span',
+        errorClass: 'help-block',
+        highlight: function (element) {// hiển thị nâng cao thêm class sau form-group has-error
+            $(element)
+            .closest('.form-group').addClass('has-error');
+        },
+        success: function (lable) {
+            lable.closest('.form-group').removeClass('has-error');
+        },
+        submitHandler: function (form) {
+            var dataObject = {
+                MaTK: $('#MaTK').val(),
+                Oldpass: $('#MKold').val(),
+                NewPass: $('#MK').val(),
+            };
+            $.ajax({
+                url: "/Admin/ThanhVienAD/ThayDoiPassAD",
+                type: "POST",
+                data: dataObject,
+                datatype: "Json",
+                success: function (data) {
+                    alert(data);
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+            form.submit();
+        }
+    });
+
+        $('.xoataikhoan').click(function () {
+            var matk = $(this).data('idmatk');
+            $.ajax({
+                url: "/Admin/ThanhVienAD/DeleteThanhVien/",
+                type: "POST",
+                data: { idmatk: matk},
+                dataType: "Json",
+                success: function (res) {
+                    if (res.status == true) {
+                        window.location.href = "/Admin/ThanhVienAD";
+                    }
+                },
+                error: function () {
+                    alert("Tài khoản có nhiều đơn hàng không thể xóa");
+                }
+            });
+        });
+        
+</script>
+}
+@using Demo_Web_Mvc.Models
+@model List<TAIKHOAN>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <div class="table-responsive">
+                   <div>
+                       <h3><strong>Xem Mật Khẩu</strong></h3> 
+                       <a href="http://www.md5online.org/"> Link 1</a>
+                       <a href="http://shopcntt.blogspot.com/2013/10/gai-ma-md5-truc-tuyen-online-md5-decode.html"> Link 2</a>  
+                       <a href="~//Account/Register/" class="btn btn-primary"> Tạo Tài Khoản</a> 
+                    </div>
+                   
+                    <table class="table table-hover" id="dataTables-example" >
+                        <thead>
+                            <tr>
+                                <th>Tên Đăng Nhập</th>
+                                <th>Mật Khẩu</th>
+                                <th>Họ Tên</th>
+                                <th>Ngày Sinh</th>
+                                <th>Email</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (TAIKHOAN tk in Model)
+                            {
+                                <tr class="odd gradeX">
+
+                                    <td>@tk.TenDangNhap</td>
+                                    <td>@tk.MatKhau</td>
+                                    <td>@tk.HoTen</td>
+                                    <td>@String.Format("{0:dd/MM/yyyy}", tk.NgaySinh)</td>
+                                    <td>@tk.Email</td>
+                                    <td>
+                                        <a href="javascript:;" class="btn btn-primary btn-xs xoataikhoan" data-idmatk="@tk.MaTK"><i class="fa fa-check"></i> Xóa</a> |
+                                        <a href="javascript:;" class="btn btn-primary btn-xs RetPassad" id="RetPassad" role="button" data-idmatk="@tk.MaTK">
+                                            <i class="fa fa-check"></i>Thay Đổi Mật Khẩu
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+    <div class="modal fade col-lg-8" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form class="form-horizontal" method="post" action="" id="profile-from1">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                        <h4 class="modal-title text-success" id="myModalLabel">Thay Đổi Mật Khẩu </h4>
+                    </div>
+                    <div class="modal-body">
+                        <input type="hidden" id="MaTK" name="MaTK" />
+
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Mật Khẩu Cũ</label>
+                            <div class="col-sm-7">
+                                <input type="password" class="form-control" id="MKold" placeholder="Mật Khẩu Cũ" name="MKold">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Mật Khẩu Mới</label>
+                            <div class="col-sm-7">
+                                <input type="password" class="form-control" id="MK" placeholder="Tối thiểu 5 kí tự" name="MK">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Nhập Lại Mật Khẩu</label>
+                            <div class="col-sm-7">
+                                <input type="password" class="form-control" id="NhapMK" placeholder="Nhập Lại Mật Khẩu" name="NhapMK">
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" id="savepass">Save changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,143 @@
+﻿.parameter {
+    display: block;
+    position: relative;
+    overflow: hidden;
+    background: #fff;
+}
+.parameter li {
+    display: table;
+    background: #fff;
+    width: 100%;
+}
+.parameter li span {
+    display: table-cell;
+    width: 35%;
+    vertical-align: top;
+    padding: 6px 5px;
+    font-size: 13px;
+    color: #666;
+}
+.parameter li div {
+    display: table-cell;
+    width: auto;
+    vertical-align: top;
+    padding: 6px 5px;
+    font-size: 13px;
+    color: #333;
+}
+li {
+    text-align: -webkit-match-parent;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+}
+.full
+{
+    width:100%;
+    height:450px;
+}
+.hieuungchu_css3
+{
+    background-color:#CCFFFF;
+    border-top-style: ridge; 
+    border-bottom-style:ridge;
+    position:relative;
+    padding-left:100px;
+    padding-right:120px;
+    color:#00FF00;
+    text-align:center;
+    display:inline;
+    font-size:18px;
+    font-weight:bold;
+	-webkit-animation: chuchay 10500ms infinite;
+	-moz-animation: chuchay  10500ms infinite; 
+	-o-animation: chuchay  10500ms infinite; 
+	animation: chuchay  10500ms infinite;
+}
+@-webkit-keyframes chuchay  {
+     0%  {background-color:#FFCCFF; color:red; left:0%; right:30%;}
+     10% {background-color:#FFCCFF; color:red; left:30%; right:50%;}
+    25%  {background-color:#FFFFCC; color:yellow; left:50%; right:80%;}
+    50%  {background-color:#FFFFCC;color:blue; right:80%; left:50%;}
+    85%  {background-color:#9999FF;color:green; right:50%; left:30%;}
+    100%  {background-color:#9999FF;color:green; right:30%; left:0%;}
+ }
+ @-moz-keyframes chuchay  { 
+     0%  {background-color:#FFCCFF; color:red; left:0%; right:30%;}
+     10% {background-color:#FFCCFF; color:red; left:30%; right:50%;}
+    25%  {background-color:#FFFFCC; color:yellow; left:50%; right:80%;}
+    50%  {background-color:#FFFFCC;color:blue; right:80%; left:50%;}
+    85%  {background-color:#9999FF;color:green; right:50%; left:30%;}
+    100%  {background-color:#9999FF;color:green; right:30%; left:0%;}
+ }
+ @-o-keyframes chuchay  { 
+      0%  {background-color:#FFCCFF; color:red; left:0%; right:30%;}
+     10% {background-color:#FFCCFF; color:red; left:30%; right:50%;}
+    25%  {background-color:#FFFFCC; color:yellow; left:50%; right:80%;}
+    50%  {background-color:#FFFFCC;color:blue; right:80%; left:50%;}
+    85%  {background-color:#9999FF;color:green; right:50%; left:30%;}
+    100%  {background-color:#9999FF;color:green; right:30%; left:0%;}
+ }
+ @keyframes chuchay  { 
+     0%  {background-color:#FFCCFF; color:red; left:0%; right:30%;}
+     10% {background-color:#FFCCFF; color:red; left:30%; right:50%;}
+    25%  {background-color:#FFFFCC; color:yellow; left:50%; right:80%;}
+    50%  {background-color:#FFFFCC;color:blue; right:80%; left:50%;}
+    85%  {background-color:#9999FF;color:green; right:50%; left:30%;}
+    100%  {background-color:#9999FF;color:green; right:30%; left:0%;}
+ }
+
+ .hieuungchu_css3_right
+{
+    background-color:#CCFFFF;
+    border-top-style: ridge; 
+    border-bottom-style:ridge;
+    position:inherit;
+    padding-left:120px;
+    padding-right:90px;
+    color:#00FF00;
+    text-align:center;
+    display:inline;
+    font-size:18px;
+    font-weight:bold;
+	-webkit-animation: chuchay1 10500ms infinite;
+	-moz-animation: chuchay1  10500ms infinite; 
+	-o-animation: chuchay1  10500ms infinite; 
+	animation: chuchay1  10500ms infinite;
+}
+
+@-webkit-keyframes chuchay1  {
+     0%  {background-color:#9999FF; color:red; right:80%; left:50%;}
+     10% {background-color:#9999FF; color:red; right:50%; left:30%;}
+    25%  {background-color:#FFFFCC; color:yellow; right:30%; left:0%;}
+    50%  {background-color:#FFFFCC; color:blue; left:0%; right:30%;}
+    85%  {background-color:#FFCCFF; color:green; left:30%; right:50%;}
+    100%  {background-color:#FFCCFF; color:green; left:50%; right:80%;}
+     
+ }
+ @-moz-keyframes chuchay1  { 
+    0%  {background-color:#9999FF; color:red; right:80%; left:50%;}
+     10% {background-color:#9999FF; color:red; right:50%; left:30%;}
+    25%  {background-color:#FFFFCC; color:yellow; right:30%; left:0%;}
+    50%  {background-color:#FFFFCC; color:blue; left:0%; right:30%;}
+    85%  {background-color:#FFCCFF; color:green; left:30%; right:50%;}
+    100%  {background-color:#FFCCFF; color:green; left:50%; right:80%;}
+ }
+ @-o-keyframes chuchay1  { 
+      0%  {background-color:#9999FF; color:red; right:80%; left:50%;}
+     10% {background-color:#9999FF; color:red; right:50%; left:30%;}
+    25%  {background-color:#FFFFCC; color:yellow; right:30%; left:0%;}
+    50%  {background-color:#FFFFCC; color:blue; left:0%; right:30%;}
+    85%  {background-color:#FFCCFF; color:green; left:30%; right:50%;}
+    100%  {background-color:#FFCCFF; color:green; left:50%; right:80%;}
+ }
+ @keyframes chuchay1  { 
+        0%  {background-color:#9999FF; color:red; right:80%; left:50%;}
+     10% {background-color:#9999FF; color:red; right:50%; left:30%;}
+    25%  {background-color:#FFFFCC; color:yellow; right:30%; left:0%;}
+    50%  {background-color:#FFFFCC; color:blue; left:0%; right:30%;}
+    85%  {background-color:#FFCCFF; color:green; left:30%; right:50%;}
+    100%  {background-color:#FFCCFF; color:green; left:50%; right:80%;}
+ }

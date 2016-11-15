@@ -1,0 +1,35 @@
+﻿/*@-moz- hỗ trợ cho firefox.
+@-webkit- hỗ trợ cho Google Chrome và Safari*/
+@-webkit-keyframes my {
+	 0% { color: #F8CD0A; } 
+	 50% { color: #80ff80;  }
+     50% { color: ##ff1a1a; }   
+	  80% { color: #F8CD0A;  } 
+ }
+ @-moz-keyframes my { 
+	 0% { color: #F8CD0A;  } 
+	 50% { color: #80ff80;  }
+     50% { color: ##ff1a1a; }  
+	  80% { color: #F8CD0A;  } 
+ }
+ @-o-keyframes my { 
+	 0% { color: #F8CD0A; } 
+	 50% { color: #80ff80; }
+     50% { color: ##ff1a1a; }  
+	 80% { color: #F8CD0A;  } 
+ }
+ @keyframes my { 
+	 0% { color: #F8CD0A;  } 
+	 50% { color: #80ff80;  }
+     50% { color: ##ff1a1a; }  
+	 80% { color: #F8CD0A;  }  
+ } 
+ .chunhay {
+         /*background:#3d3d3d;*/
+        font-size:18px;
+        font-weight:bold;
+	 -webkit-animation: my 1500ms infinite;
+	 -moz-animation: my 1500ms infinite; 
+	 -o-animation: my 1500ms infinite; 
+	 animation: my 1500ms infinite;
+}

@@ -1,0 +1,92 @@
+﻿@using Demo_Web_Mvc.Models;
+@using Demo_Web_Mvc.Helpers;
+@section view_title
+{
+    Danh sách sản phẩm
+}
+@section css
+{
+    <link href="~/public/Sanpham.css" rel="stylesheet" />
+}
+@section js
+{
+    <script type="text/javascript">
+        $('.addToCart').on('click', function () {
+            var proId = $(this).data('proid');
+            $('#txtMASP').val(proId);
+            $('#frmAddCart').submit();
+        });
+    </script>
+}
+@model List<SP_CTModel>
+@if (Model.Count < 1)
+{
+    <div class="row text-center">
+        <h3>Từ Khóa @ViewBag.search Không Được Tìm Thấy!</h3>
+    </div>
+}
+else
+{
+    <form id="frmAddCart" method="post" action="@Url.Action("AddSearch", "Cart")">
+        <input type="hidden" name="MASP" id="txtMASP" />
+        <input type="hidden" name="Quantity" value="1" />
+        <input type="hidden" name="namesearch" value="@ViewBag.search" />
+        <input type="hidden" name="page" value="@ViewBag.curPage" />
+    </form>
+    <div class="row">
+        @foreach (SP_CTModel sp in Model)
+        {
+            <div class="col-md-3 col-ms-3">
+                <ul class="products">
+                    <li>
+                        <a href="@Url.Action("SanPhamChitiet", "SanPham", new { spid_x = sp.spid })">
+                            <img src="~/hinhanh/@sp.linkanh" style="display: block;" />
+                        </a>
+                        <h3>@sp.tensp</h3>
+                        <div>
+                            <span>
+                                @string.Format("{0:N0},000 đ", sp.gia)
+                                @if (CurrentContext.IsLogged())
+                                {
+                                    <a href="javascript:;" role="button" class="btn btn-success addToCart" data-proid="@sp.spid">
+                                        <i class="fa fa-cart-plus"></i> Cart
+                                    </a>
+                                }
+                            </span>
+
+                        </div>
+                        <figure class="showdescription bginfo">
+                            <h3>@sp.tensp</h3>
+                            <span>Màn hình: @sp.manhinh</span>
+                            <span>HĐH: @sp.hdh</span>
+                            <span>CPU: @sp.cpu</span>
+                            <span>Camera: @sp.camsau , @sp.sim</span><span>Pin: @sp.pin</span>
+                        </figure>
+                    </li>
+                </ul>
+            </div>
+        }
+    </div>
+    if (Model.Count != 1)
+    {
+    <div class="row">
+        <nav>
+            <ul class="pagination">
+                <li @if (ViewBag.curPage == 1)
+                    { <text> class="disabled" </text>  }><a href="?curPage=@ViewBag.PrevPage" aria-label="Previous"><span aria-hidden="true">«</span></a></li>
+                @for (int i = 1; i <= ViewBag.Pages; i++)
+                {
+                    <li @if (i == ViewBag.curPage)
+                    { <text> class="active" </text> }>
+                        <a href="?curPage=@i ">@i</a>
+                    </li>
+                }
+                <li @if (ViewBag.NextCuoi == ViewBag.curPage)
+                    { <text> class="disabled" </text>  }><a href="?curPage=@ViewBag.NextPage" aria-label="Next"><span aria-hidden="true">»</span></a></li>
+            </ul>
+
+        </nav>
+    </div>
+    }
+
+}

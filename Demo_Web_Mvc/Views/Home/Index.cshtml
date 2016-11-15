@@ -1,0 +1,73 @@
+﻿@section view_title
+{
+
+<nav role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapsible">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="javascript:;">Trang Chủ</a>
+        </div>
+        <div class="navbar-collapse collapse" id="navbar-collapsible">
+            <ul class="nav navbar-nav navbar-left">
+                <li><a href="#san-pham-moi"> Sản Phẩm Mới Nhất</a></li>
+                <li><a href="#san-pham-nhieu-nguoi-xem"> Sản Phẩm Nhiều Người Xem</a></li>
+                <li><a href="#san-pham-ban-chay">Sản Phẩm Bán Chạy</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+}
+@section css{
+   
+}
+@section js
+{
+<script src="~/public/scrollpy.js"></script>
+}
+@*<div class="row">
+    <div class="col-sm-12" style="background-color: #FFFFCC; padding-top: 15px; padding-bottom: 15px; font-size: 15px; color: #9966FF;margin-top:-15px; ">
+        Sản Phẩm Mới Nhất
+    </div>
+    <div>@Html.Action("PartialSanPhamMoi", "SanPham")</div>
+    <div class="col-sm-12" style="background-color: #FFFFCC; padding-top: 15px; padding-bottom: 15px; font-size: 15px; color: #9966FF; margin-top: -20px;">
+        Sản Phẩm Nhiều Người Xem
+    </div>
+    <div>@Html.Action("PartialSanPhamTheoSoLuotXem", "SanPham")</div>
+    <div class="col-sm-12" style="background-color: #FFFFCC; padding-top: 15px; padding-bottom: 15px; font-size: 15px; color: #9966FF; margin-top: -20px;">
+        Sản Phẩm Bán Chạy
+    </div>
+    <div>@Html.Action("PartialSanPhamBanChay", "SanPham")</div>
+</div>*@
+
+
+<section class="container-fluid" id="san-pham-moi">
+    <div class="row" style="background-color: #FFFFCC; padding-top: 15px; padding-bottom: 15px; font-size: 15px; color: #9966FF;margin-top:-15px; padding-left:25px ">
+        Sản Phẩm Mới Nhất
+    </div>
+    <div class="row">
+        @Html.Action("PartialSanPhamMoi", "SanPham")
+    </div>
+
+</section>
+
+<section class="container-fluid" id="san-pham-nhieu-nguoi-xem">
+    <div class="row" style="background-color: #FFFFCC; padding-top: 15px; padding-bottom: 15px; font-size: 15px; color: #9966FF; margin-top: -15px; padding-left: 25px;">
+        Sản Phẩm Nhiều Người Xem
+    </div>
+    <div class="row">
+        @Html.Action("PartialSanPhamTheoSoLuotXem", "SanPham")
+    </div>
+</section>
+<section class="container-fluid" id="san-pham-ban-chay">
+    <div class="row" style="background-color: #FFFFCC; padding-top: 15px; padding-bottom: 15px; font-size: 15px; color: #9966FF; margin-top: -15px; padding-left: 25px">
+        Sản Phẩm Bán Chạy
+    </div>
+    <div class="row">
+        @Html.Action("PartialSanPhamBanChay", "SanPham")
+    </div>
+</section>

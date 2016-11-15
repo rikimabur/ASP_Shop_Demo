@@ -1,0 +1,269 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="QLMobileModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="QLMobileEntities1" annotation:LazyLoadingEnabled="true">
+    <FunctionImport Name="sp_alterdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_creatediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="version" Mode="In" Type="Int32" />
+      <Parameter Name="definition" Mode="In" Type="Binary" />
+    </FunctionImport>
+    <FunctionImport Name="sp_dropdiagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(QLMobileModel.sp_helpdiagramdefinition_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(QLMobileModel.sp_helpdiagrams_Result)">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+    </FunctionImport>
+    <FunctionImport Name="sp_renamediagram">
+      <Parameter Name="diagramname" Mode="In" Type="String" />
+      <Parameter Name="owner_id" Mode="In" Type="Int32" />
+      <Parameter Name="new_diagramname" Mode="In" Type="String" />
+    </FunctionImport>
+    <FunctionImport Name="sp_upgraddiagrams" />
+    <EntitySet Name="DONHANGs" EntityType="QLMobileModel.DONHANG" />
+    <EntitySet Name="NHASANXUATs" EntityType="QLMobileModel.NHASANXUAT" />
+    <EntitySet Name="SANPHAMCHITIETs" EntityType="QLMobileModel.SANPHAMCHITIET" />
+    <EntitySet Name="sysdiagrams" EntityType="QLMobileModel.sysdiagram" />
+    <EntitySet Name="TAIKHOANs" EntityType="QLMobileModel.TAIKHOAN" />
+    <EntitySet Name="THELOAIs" EntityType="QLMobileModel.THELOAI" />
+    <AssociationSet Name="FK_DONHANG_TAIKHOAN" Association="QLMobileModel.FK_DONHANG_TAIKHOAN">
+      <End Role="TAIKHOAN" EntitySet="TAIKHOANs" />
+      <End Role="DONHANG" EntitySet="DONHANGs" />
+    </AssociationSet>
+    <EntitySet Name="SANPHAMs" EntityType="QLMobileModel.SANPHAM" />
+    <AssociationSet Name="FK_SANPHAM_NHASANXUAT" Association="QLMobileModel.FK_SANPHAM_NHASANXUAT">
+      <End Role="NHASANXUAT" EntitySet="NHASANXUATs" />
+      <End Role="SANPHAM" EntitySet="SANPHAMs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SANPHAM_SANPHAMCHITIET" Association="QLMobileModel.FK_SANPHAM_SANPHAMCHITIET">
+      <End Role="SANPHAMCHITIET" EntitySet="SANPHAMCHITIETs" />
+      <End Role="SANPHAM" EntitySet="SANPHAMs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_SANPHAM_THELOAI" Association="QLMobileModel.FK_SANPHAM_THELOAI">
+      <End Role="THELOAI" EntitySet="THELOAIs" />
+      <End Role="SANPHAM" EntitySet="SANPHAMs" />
+    </AssociationSet>
+    <EntitySet Name="DONHANGCHITIETs" EntityType="QLMobileModel.DONHANGCHITIET" />
+    <AssociationSet Name="FK_DONHANGCHITIET_DONHANG" Association="QLMobileModel.FK_DONHANGCHITIET_DONHANG">
+      <End Role="DONHANG" EntitySet="DONHANGs" />
+      <End Role="DONHANGCHITIET" EntitySet="DONHANGCHITIETs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DONHANGCHITIET_NHASANXUAT" Association="QLMobileModel.FK_DONHANGCHITIET_NHASANXUAT">
+      <End Role="NHASANXUAT" EntitySet="NHASANXUATs" />
+      <End Role="DONHANGCHITIET" EntitySet="DONHANGCHITIETs" />
+    </AssociationSet>
+    <AssociationSet Name="FK_DONHANGCHITIET_SANPHAM" Association="QLMobileModel.FK_DONHANGCHITIET_SANPHAM">
+      <End Role="SANPHAM" EntitySet="SANPHAMs" />
+      <End Role="DONHANGCHITIET" EntitySet="DONHANGCHITIETs" />
+    </AssociationSet>
+  </EntityContainer>
+  <ComplexType Name="sp_helpdiagramdefinition_Result">
+    <Property Type="Int32" Name="version" Nullable="true" />
+    <Property Type="Binary" Name="definition" Nullable="true" />
+  </ComplexType>
+  <ComplexType Name="sp_helpdiagrams_Result">
+    <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+    <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+    <Property Type="Int32" Name="ID" Nullable="false" />
+    <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+    <Property Type="Int32" Name="OwnerID" Nullable="false" />
+  </ComplexType>
+  <EntityType Name="DONHANG">
+    <Key>
+      <PropertyRef Name="MaDH" />
+    </Key>
+    <Property Name="MaDH" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NgayNhap" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="TongTien" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="MAKH" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="TAIKHOAN" Relationship="QLMobileModel.FK_DONHANG_TAIKHOAN" FromRole="DONHANG" ToRole="TAIKHOAN" />
+    <NavigationProperty Name="DONHANGCHITIETs" Relationship="QLMobileModel.FK_DONHANGCHITIET_DONHANG" FromRole="DONHANG" ToRole="DONHANGCHITIET" />
+  </EntityType>
+  <EntityType Name="NHASANXUAT">
+    <Key>
+      <PropertyRef Name="MANSX" />
+    </Key>
+    <Property Name="MANSX" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TENNSX" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SANPHAMs" Relationship="QLMobileModel.FK_SANPHAM_NHASANXUAT" FromRole="NHASANXUAT" ToRole="SANPHAM" />
+    <NavigationProperty Name="DONHANGCHITIETs" Relationship="QLMobileModel.FK_DONHANGCHITIET_NHASANXUAT" FromRole="NHASANXUAT" ToRole="DONHANGCHITIET" />
+  </EntityType>
+  <EntityType Name="SANPHAMCHITIET">
+    <Key>
+      <PropertyRef Name="MASP" />
+    </Key>
+    <Property Name="MASP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ManHinh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HeDieuHanh" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="CamTruoc" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CamSau" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CPU" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="Ram" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
+    <Property Name="BoNhoTrong" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="TheSim" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HoTroTheNho" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="DungLuongPin" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ChucNangKhac" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Soluong" Type="Int32" />
+    <Property Name="Gia" Type="Decimal" Precision="19" Scale="4" />
+    <NavigationProperty Name="SANPHAM" Relationship="QLMobileModel.FK_SANPHAM_SANPHAMCHITIET" FromRole="SANPHAMCHITIET" ToRole="SANPHAM" />
+  </EntityType>
+  <EntityType Name="sysdiagram">
+    <Key>
+      <PropertyRef Name="diagram_id" />
+    </Key>
+    <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="principal_id" Type="Int32" Nullable="false" />
+    <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="version" Type="Int32" />
+    <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+  </EntityType>
+  <EntityType Name="TAIKHOAN">
+    <Key>
+      <PropertyRef Name="MaTK" />
+    </Key>
+    <Property Name="MaTK" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TenDangNhap" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="MatKhau" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="HoTen" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="NgaySinh" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="bixoa" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="DONHANGs" Relationship="QLMobileModel.FK_DONHANG_TAIKHOAN" FromRole="TAIKHOAN" ToRole="DONHANG" />
+  </EntityType>
+  <EntityType Name="THELOAI">
+    <Key>
+      <PropertyRef Name="MATL" />
+    </Key>
+    <Property Name="MATL" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TENTHELOAI" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="SANPHAMs" Relationship="QLMobileModel.FK_SANPHAM_THELOAI" FromRole="THELOAI" ToRole="SANPHAM" />
+  </EntityType>
+  <Association Name="FK_DONHANG_TAIKHOAN">
+    <End Type="QLMobileModel.TAIKHOAN" Role="TAIKHOAN" Multiplicity="1" />
+    <End Type="QLMobileModel.DONHANG" Role="DONHANG" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="TAIKHOAN">
+        <PropertyRef Name="MaTK" />
+      </Principal>
+      <Dependent Role="DONHANG">
+        <PropertyRef Name="MAKH" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="SANPHAM">
+    <Key>
+      <PropertyRef Name="MASP" />
+    </Key>
+    <Property Name="MASP" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="TENSP" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="Link" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="MATHELOAI" Type="Int32" />
+    <Property Name="MANHASANXUAT" Type="Int32" />
+    <Property Name="Ngay" Type="DateTime" Precision="3" />
+    <Property Name="SoLuotXem" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="bixoa" Type="Int32" />
+    <NavigationProperty Name="NHASANXUAT" Relationship="QLMobileModel.FK_SANPHAM_NHASANXUAT" FromRole="SANPHAM" ToRole="NHASANXUAT" />
+    <NavigationProperty Name="SANPHAMCHITIET" Relationship="QLMobileModel.FK_SANPHAM_SANPHAMCHITIET" FromRole="SANPHAM" ToRole="SANPHAMCHITIET" />
+    <NavigationProperty Name="THELOAI" Relationship="QLMobileModel.FK_SANPHAM_THELOAI" FromRole="SANPHAM" ToRole="THELOAI" />
+    <NavigationProperty Name="DONHANGCHITIETs" Relationship="QLMobileModel.FK_DONHANGCHITIET_SANPHAM" FromRole="SANPHAM" ToRole="DONHANGCHITIET" />
+  </EntityType>
+  <Association Name="FK_SANPHAM_NHASANXUAT">
+    <End Type="QLMobileModel.NHASANXUAT" Role="NHASANXUAT" Multiplicity="0..1" />
+    <End Type="QLMobileModel.SANPHAM" Role="SANPHAM" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NHASANXUAT">
+        <PropertyRef Name="MANSX" />
+      </Principal>
+      <Dependent Role="SANPHAM">
+        <PropertyRef Name="MANHASANXUAT" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SANPHAM_SANPHAMCHITIET">
+    <End Type="QLMobileModel.SANPHAMCHITIET" Role="SANPHAMCHITIET" Multiplicity="1" />
+    <End Type="QLMobileModel.SANPHAM" Role="SANPHAM" Multiplicity="0..1" />
+    <ReferentialConstraint>
+      <Principal Role="SANPHAMCHITIET">
+        <PropertyRef Name="MASP" />
+      </Principal>
+      <Dependent Role="SANPHAM">
+        <PropertyRef Name="MASP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_SANPHAM_THELOAI">
+    <End Type="QLMobileModel.THELOAI" Role="THELOAI" Multiplicity="0..1" />
+    <End Type="QLMobileModel.SANPHAM" Role="SANPHAM" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="THELOAI">
+        <PropertyRef Name="MATL" />
+      </Principal>
+      <Dependent Role="SANPHAM">
+        <PropertyRef Name="MATHELOAI" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="DONHANGCHITIET">
+    <Key>
+      <PropertyRef Name="MAID" />
+    </Key>
+    <Property Name="MAID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MaDH" Type="Int32" Nullable="false" />
+    <Property Name="MaSP" Type="Int32" Nullable="false" />
+    <Property Name="MaNSX" Type="Int32" Nullable="false" />
+    <Property Name="SoLuong" Type="Int32" Nullable="false" />
+    <Property Name="Gia" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="TongTien" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <NavigationProperty Name="DONHANG" Relationship="QLMobileModel.FK_DONHANGCHITIET_DONHANG" FromRole="DONHANGCHITIET" ToRole="DONHANG" />
+    <NavigationProperty Name="NHASANXUAT" Relationship="QLMobileModel.FK_DONHANGCHITIET_NHASANXUAT" FromRole="DONHANGCHITIET" ToRole="NHASANXUAT" />
+    <NavigationProperty Name="SANPHAM" Relationship="QLMobileModel.FK_DONHANGCHITIET_SANPHAM" FromRole="DONHANGCHITIET" ToRole="SANPHAM" />
+  </EntityType>
+  <Association Name="FK_DONHANGCHITIET_DONHANG">
+    <End Type="QLMobileModel.DONHANG" Role="DONHANG" Multiplicity="1" />
+    <End Type="QLMobileModel.DONHANGCHITIET" Role="DONHANGCHITIET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DONHANG">
+        <PropertyRef Name="MaDH" />
+      </Principal>
+      <Dependent Role="DONHANGCHITIET">
+        <PropertyRef Name="MaDH" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DONHANGCHITIET_NHASANXUAT">
+    <End Type="QLMobileModel.NHASANXUAT" Role="NHASANXUAT" Multiplicity="1" />
+    <End Type="QLMobileModel.DONHANGCHITIET" Role="DONHANGCHITIET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="NHASANXUAT">
+        <PropertyRef Name="MANSX" />
+      </Principal>
+      <Dependent Role="DONHANGCHITIET">
+        <PropertyRef Name="MaNSX" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_DONHANGCHITIET_SANPHAM">
+    <End Type="QLMobileModel.SANPHAM" Role="SANPHAM" Multiplicity="1" />
+    <End Type="QLMobileModel.DONHANGCHITIET" Role="DONHANGCHITIET" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="SANPHAM">
+        <PropertyRef Name="MASP" />
+      </Principal>
+      <Dependent Role="DONHANGCHITIET">
+        <PropertyRef Name="MaSP" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

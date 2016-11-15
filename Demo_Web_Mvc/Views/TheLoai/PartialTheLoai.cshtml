@@ -1,0 +1,7 @@
+﻿@using Demo_Web_Mvc.Models;
+@model List<THELOAI>
+
+@foreach (THELOAI tl in Model)
+{
+   <li><a href="@Url.Action("ShowAll", "SanPham", new { id = tl.MATL })">@tl.TENTHELOAI</a></li>
+}

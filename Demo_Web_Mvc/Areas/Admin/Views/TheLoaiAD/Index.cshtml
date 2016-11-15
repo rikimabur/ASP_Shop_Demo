@@ -1,0 +1,218 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section view_title_ad
+{
+    Quản Lý Thể Loại
+}
+@section js_ad
+{
+    <script src="~/assets/jquery%20-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        $("#themtl").click(function () {
+               $("#create_tl").removeClass('hidden'); 
+               $("#dongtl").click(function (e) {
+                   e.stopPropagation();
+                   $("#create_tl").add('hidden');
+                   return false;
+               });
+
+                $('.luutl').click(function () {
+                    $('#form_create_tl').validate({
+                        rules: {
+                            TenTheLoai: 'required',
+                        },
+                        messages: {
+                            TenTheLoai: 'Chưa nhập tên thể loại.',
+                        },
+                        errorElenment: 'span',
+                        errorClass: 'help-block',
+                        highlight: function (element) {
+                            $(element)
+                            .closest('.form-group').addClass('has-error');
+                        },
+                        success: function (lable) {
+                            lable.closest('.form-group').removeClass('has-error');
+                        },
+                        submitHandler: function () {
+                            var tentl = $('#TenTheLoai').val();
+                            $.ajax({
+                                url: "/Admin/TheLoaiAD/ThemTheLoaiAD",
+                                data: { ten: tentl },
+                                type: "POST",
+                                datatype: "Json",
+                                success: function (res) {
+                                    if (res.status == true) {
+                                        $("#create_tl").hide(300);
+                                        table.reload();
+                                        tbodyList.reload();
+                                    }
+                                },
+                                error: function () {
+                                    alert("error");
+                                }
+                            });
+                        }
+                    });
+                });
+            });
+
+            $('.xoa_tl').click(function () {
+                var ma = $(this).data('idmatl');
+                var Delete = $(this).parent().parent();
+                $.ajax({
+                    url: "/Admin/TheLoaiAD/XoaTheLoaiAD",
+                    data: { maTheLoai: ma },
+                    type: "POST",
+                    datatype: "Json",
+                    success: function (res) {
+                        if (res.status == true) {
+                            Delete.remove();
+                        }
+                    },
+                    error: function () {
+                        alert("Nhà Sản Xuất Không Xóa Được Vì Có Nhiều Sản Phẩm");
+                    }
+                });
+            });
+            $('.edit_tl').click(function () {
+                var matl = $(this).data('idmatl');
+                var tentl = $(this).data('tentl');
+
+                $('#myModal1').modal('show');
+                $('#MATL').val(matl);
+                $('#TENTHELOAI').val(tentl);
+            });
+            // kiem tra bang validator
+            $('#profile-from1').validate({
+                rules: {//luật
+                    MATL: 'required'
+                },
+                messages: {// thông báo
+                    TENTHELOAI: { required: 'Tên Thể Loại Không Được Rỗng.' },
+                },
+                errorElenment: 'span',
+                errorClass: 'help-block',
+                highlight: function (element) {// hiển thị nâng cao thêm class sau form-group has-error
+                    $(element)
+                    .closest('.form-group').addClass('has-error');
+                },
+                success: function (lable) {
+                    lable.closest('.form-group').removeClass('has-error');
+                },
+                submitHandler: function (form) {
+                    var mansx = $('#MATL').val();
+                    var tennsx = $('#TENTHELOAI').val();
+                    var update = $(this).parent().parent();
+                    $.ajax({
+                        url: "/Admin/TheLoaiAD/UpDateTheLoaiAD",
+                        type: "POST",
+                        data: { ma: mansx, ten: tennsx },
+                        datatype: "Json",
+                        success: function (res) {
+                            if (res.status == true) {
+                                update.load();
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+                    form.submit();
+                }
+            });
+    </script>
+}
+@using Demo_Web_Mvc.Models
+@model List<THELOAI>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <a href="javascipt:;" class="btn btn-primary" id="themtl"> Thêm Thể Loại</a>
+                <div class="row hidden" id="create_tl">
+                    <div class="col-sm-offset-2 col-xs-offset-2">
+                        <form class="form-horizontal" action="" method="post" id="form_create_tl">
+                            <div class="form-group">
+                                <label for="txtTenSP" class="col-sm-3 control-label col-xs-4">Tên Thể Loại: </label>
+                                <div class="col-sm-4 col-xs-4">
+                                    <input type="text" name="TenTheLoai" id="TenTheLoai" />
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-sm-6 col-sm-offset-4">
+                                    <button type="submit" class="btn btn-danger luutl">
+                                        <i class="fa fa-check"></i>&nbsp;Lưu
+                                    </button>
+                                    <button type="submit" class="btn btn-danger dongtl">
+                                        <i class="fa fa-remove"></i>&nbsp;Đóng
+                                    </button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="table-responsive">
+
+                    <table class="table table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th class="col-lg-2">Mã Thể Loại</th>
+                                <th class="col-lg-2">Tên Thể Loại</th>
+                                <th class ="col-lg-2">&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyList">
+                            @foreach (THELOAI tl in Model)
+                            {
+                                <tr class="odd gradeX">
+                                    <td>@tl.MATL</td>
+                                    <td>@tl.TENTHELOAI</td>
+                                    <td>
+                                        <a href="javascript:;" class="xoa_tl" data-idmatl="@tl.MATL" > Xóa</a> |
+                                        <a href="javascript:;" class="edit_tl" role="button" data-idmatl="@tl.MATL" data-tentl="@tl.TENTHELOAI" id="rowid">
+                                            Chỉnh Sửa
+                                        </a>
+                                        <div class="form_up"></div>
+                                    </td>
+                                </tr>
+
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+<div class="modal fade col-lg-8" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal" method="post" action="" id="profile-from1">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title text-success" id="myModalLabel">Thay Đổi Thể Loại </h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="MATL" name="MATL" />
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Tên Thể Loại</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="TENTHELOAI" name="TENTHELOAI">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="savepass">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

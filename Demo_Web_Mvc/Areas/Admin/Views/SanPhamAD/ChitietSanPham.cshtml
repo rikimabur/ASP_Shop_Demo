@@ -1,0 +1,86 @@
+﻿@{
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section css_ad
+{
+    <link href="~/public/SanPhamChiTiet.css" rel="stylesheet" />
+}
+@section view_title_ad
+{
+    Chi Tiết Sản Phẩm
+}
+@section js_ad{
+}
+@using Demo_Web_Mvc.Models;
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="table-responsive">
+                    <div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <span class='zoom' id='hinhanh'>
+                                    <img id="hinhanh" src="~/hinhanh/@Model.linkanh" class="full" />
+                                </span>
+                                <span><h3 style="color:red; display:block; text-align:center;">Giá : @string.Format("{0:N0},000 đ", Model.gia)</h3></span>
+                            </div>
+                            <div class="col-md-6">
+                                <h2>Thông Tin Kỹ Thuật</h2>
+                                <ul class="parameter">
+                                    <li>
+                                        <h3 class="text-primary text-center">@Model.tensp</h3>
+                                    </li>
+                                    <li>
+                                        <span> Màn hình: </span>
+                                        <div> @Model.manhinh</div>
+                                    </li>
+                                    <li>
+                                        <span> Hệ điều hành: </span>
+                                        <div> @Model.hdh</div>
+                                    </li>
+                                    <li>
+                                        <span> Camera sau: </span>
+                                        <div> @Model.camsau</div>
+                                    </li>
+                                    <li>
+                                        <span> Camera trước: </span>
+                                        <div> @Model.camtruoc</div>
+                                    </li>
+                                    <li>
+                                        <span> CPU: </span>
+                                        <div> @Model.cpu</div>
+                                    </li>
+                                    <li>
+                                        <span> Ram: </span>
+                                        <div> @Model.ram</div>
+                                    </li>
+                                    <li>
+                                        <span> Bộ nhớ trong: </span>
+                                        <div> @Model.bonhotrong</div>
+                                    </li>
+                                    <li>
+                                        <span> Hổ trợ thẻ nhớ: </span>
+                                        <div> @Model.hotrothenho</div>
+                                    </li>
+                                    <li>
+                                        <span> Thẻ sim: </span>
+                                        <div> @Model.sim</div>
+                                    </li>
+                                    <li>
+                                        <span> Dung lượng pin: </span>
+                                        <div> @Model.pin</div>
+                                    </li>
+                                    <li>
+                                        <span> Chức năng khác: </span>
+                                        <div> @Model.chucnangkhac</div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

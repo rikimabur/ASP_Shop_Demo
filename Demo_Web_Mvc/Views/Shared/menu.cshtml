@@ -1,0 +1,140 @@
+﻿<link href="~/public/mega.css" rel="stylesheet" />
+<script src="~/public/mega.js"></script>
+<style>
+    input[type=radio] {
+        border: 0px;
+        width:15px;
+        height: 15px;
+    }
+    input[type=checkbox] {
+        border: 0px;
+        width: 15px;
+        height: 15px;
+    }
+</style>
+<div class="container text-left">
+    <nav class="navbar navbar-default">
+        <div class="navbar-header">
+            <button class="navbar-toggle" type="button" data-toggle="collapse" data-target=".js-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="javascript:;">Tìm Nhanh:</a>
+        </div>
+
+        <div class="collapse navbar-collapse js-navbar-collapse">
+          
+            <ul class="nav navbar-nav navbar-left">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascipt:;">Nhà Sản Xuất<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("ShowAll", "SanPham", new { id=1})"> Tất cả</a></li>
+                        <li> @Html.Action("PartialNhaSanXuat", "NhaSanXuat")</li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascipt:;">Giá<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="@Url.Action("ShowAll", "SanPham", new { id=1})"> Tất cả</a></li>
+                        <li><a href="@Url.Action("Search_Gia", "SanPham", new { p = 1 })"> Dưới 1 triệu</a></li>
+                        <li><a href="@Url.Action("Search_Gia", "SanPham", new { p = 3 })"> Từ 1-3 triệu</a></li>
+                        <li><a href="@Url.Action("Search_Gia", "SanPham", new { p = 5 })"> Từ 3-5 triệu</a></li>
+                        <li><a href="@Url.Action("Search_Gia", "SanPham", new { p = 7 })"> Từ 5-7 triệu</a></li>
+                        <li><a href="@Url.Action("Search_Gia", "SanPham", new { p = 10 })"> Từ 7-10 triệu</a></li>
+                        <li><a href="@Url.Action("Search_Gia", "SanPham", new { p = 11 })"> Trên 10 triệu</a></li>
+                    </ul>
+                </li>
+            </ul>
+            @*<ul class="nav navbar-nav">
+                
+                <li class="dropdown mega-dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">Tìm Nâng Cao<span class="caret"></span></a>
+                    <ul class=" dropdown-menu mega-dropdown-menu ">
+                        <li class="col-sm-2">
+                            <ul style="margin-left:10px;">
+                                <li class="dropdown-header" style="font-weight:bold;">
+                                    <a class="radio-inline" href="javascript:;"><input type="radio" name="optradio" checked>Tất Cả Mức Giá</a>
+                                </li>
+                                <li>
+                                    <a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Dưới 1 triệu</a>
+                                </li>
+                                <li>
+                                    <a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Từ 1-3 triệu</a>
+                                </li>
+                                <li>
+                                    <a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Từ 3-5 triệu</a>
+                                </li>
+                                <li>
+                                    <a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Từ 5-7 triệu</a>
+                                </li>
+                                <li>
+                                    <a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Từ 7-10 triệu</a>
+                                </li>
+                                <li>
+                                    <a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Trên 10 triệu</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="col-sm-3">
+                            <ul>
+                                <li><a class="radio-inline"><input type="radio" name="optradio" checked>Tất Cả Hãng Sản Xuất</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Sony</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Apple</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">HTC</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">MicroSoft</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Lenovo</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">SamSung</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Xiaomi</a></li>
+                            </ul>
+                        </li>
+                        <li class="col-sm-2">
+                            <ul>
+                                <li>
+                                    <a class="radio-inline"><input type="radio" name="optradio" checked>Tất Cả Màn Hình</a>
+                                </li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Dưới 3"</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Khoảng 4"</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Khoảng 5"</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Khoảng 6"</a></li>
+                            </ul>
+                        </li>
+                        <li class="col-sm-2">
+                            <ul>
+                                <li>
+                                    <a class="radio-inline"><input type="radio" name="optradio" checked>Tất Cả Hệ Điều Hành</a>
+                                </li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Android</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">IOS (Phone)</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Windows Phone</a></li>
+                                <li><a class="radio-inline" href="javascript:;"><input type="radio" name="optradio">Miui</a></li>
+                            </ul>
+                        </li>
+                        <li class="col-sm-3">
+                            <ul>
+                                <li>
+                                    <a class="radio-inline">Tính Năng Nỗi Bật</a>
+                                </li>
+                                <li><a class="checkbox-inline" href="javascript:;"><input type="checkbox" name="vehicle2" value="Car">Bảo mật vân tay</a></li>
+                                <li><a class="checkbox-inline" href="javascript:;"><input type="checkbox" name="vehicle2" value="Car">2 SIM</a></li>
+                                <li><a class="checkbox-inline" href="javascript:;"><input type="checkbox" name="vehicle2" value="Car">Hổ trợ 4G</a></li>
+                                <li><a class="checkbox-inline" href="javascript:;"><input type="checkbox" name="vehicle2" value="Car">Chuyên Selfie (tự sướng)</a></li>
+                                <li><a class="checkbox-inline" href="javascript:;"><input type="checkbox" name="vehicle2" value="Car">Pin khủng (> 300mAh)</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                
+            </ul>*@
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="javascipt:;">Giá cao đến thấp<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:;"> Xem nhiều nhất</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.nav-collapse -->
+    </nav>
+</div>

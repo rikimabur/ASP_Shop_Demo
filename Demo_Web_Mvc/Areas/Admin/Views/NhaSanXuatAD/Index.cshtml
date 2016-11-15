@@ -1,0 +1,249 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_LayoutAdmin.cshtml";
+}
+@section view_title_ad
+{
+    Quản Lý Nhà Sản Xuất
+}
+@section js_ad
+{
+<script src="~/assets/jquery%20-validation/dist/jquery.validate.min.js"></script>
+    <script type="text/javascript">
+        $('#create_nsx').hide();
+
+        $("#themnsx").click(function () {
+            $("#create_nsx").slideDown(300);
+        });
+        $("#dongnhasanxuat").click(function () {
+            $("#create_nsx").hide();
+        });
+        
+        $('.luunhasanxuat').click(function () {
+            $('#form_create_nsx').validate({
+                rules: {
+                    TenNhaSanXuat: 'required',
+                },
+                messages: {
+                    TenNhaSanXuat: 'Chưa Nhập Tên Nhà Sản Xuất.',
+                },
+                errorElenment: 'span',
+                errorClass: 'help-block',
+                highlight: function (element) {
+                    $(element)
+                    .closest('.form-group').addClass('has-error');
+                },
+                success: function (lable) {
+                    lable.closest('.form-group').removeClass('has-error');
+                    $("#dongnhasanxuat").click(function () {
+                        $("#create_nsx").hide();
+                    });
+                },
+                submitHandler: function () {
+
+                    var tennhasanxuat = $('#TenNhaSanXuat').val();
+                    $.ajax({
+                        url: "/Admin/NhaSanXuatAD/ThemNhaSanXuatAD",
+                        data: {ten: tennhasanxuat},
+                        type:"POST",
+                        datatype: "Json",
+                        success: function (res)
+                        {
+                            if (res.status == true)
+                            {
+                                window.location.href = "/Admin/NhaSanXuatAD";
+                            }
+                        },
+                        error: function () {
+                            alert("error");
+                        }
+                    });
+                }
+            });
+        });
+        $('.xoa_nsx').click(function () {
+            var ma = $(this).data('idmansx');
+            $.ajax({
+                url: "/Admin/NhaSanXuatAD/XoaNhaSanXuatAD",
+                data: { manhasanxuat: ma },
+                type: "POST",
+                datatype: "Json",
+                success: function (res) {
+                    if (res.status == true) {
+                        window.location.href = "/Admin/NhaSanXuatAD";
+                    }
+                },
+                error: function () {
+                    alert("Nhà Sản Xuất Không Xóa Được Vì Có Nhiều Sản Phẩm");
+                }
+            });
+        });
+
+        $('.edit_nsx').click(function () {
+            var mansx = $(this).data('idmansx');
+            var tennsx = $(this).data('tennsx');
+
+            //$.ajax({
+            //    url: "/Admin/NhaSanXuatAD/LoadNhaSanXuat",
+            //    data: { ma: mansx },
+            //    type: "POST",
+            //    datatype: "Json",
+            //    success: function (data) {
+            //        var html =
+                        
+            //               '<td>' + data.MANSX + '</td>' +
+            //               '<td>' + data.TENNSX + '</td>'+
+            //               '<td>'
+            //               +
+            //                '<a href="javascript:;" class="btn btn-danger luu_ajax"><i class="fa fa-check"></i>&nbsp;Lưu </a>'+
+            //                '|<a href="javascript:;" class="btn btn-danger dong_ajax"> <i class="fa fa-remove"></i>&nbsp;Đóng  </a'
+            //                +
+            //               '</td>'
+            //                $('nhasanxuat_ajax').append(html);
+            //                $('#load_hide').slideUp();
+                        
+            //    },
+            //    error: function () {
+            //        alert("Nhà Sản Xuất Không Xóa Được Vì Có Nhiều Sản Phẩm");
+            //    }
+            //});
+            $('#myModal1').modal('show');
+            $('#MANSX').val(mansx);
+            $('#TENNSX').val(tennsx);
+        });
+        // kiem tra bang validator
+        $('#profile-from1').validate({
+            rules: {//luật
+                TENNSX:'required'
+            },
+            messages: {// thông báo
+                TENNSX: { required: 'Tên Nhà Sản Xuất Không Được Rỗng.' },
+            },
+            errorElenment: 'span',
+            errorClass: 'help-block',
+            highlight: function (element) {// hiển thị nâng cao thêm class sau form-group has-error
+                $(element)
+                .closest('.form-group').addClass('has-error');
+            },
+            success: function (lable) {
+                lable.closest('.form-group').removeClass('has-error');
+            },
+            submitHandler: function (form) {
+                var mansx = $('#MANSX').val();
+                var tennsx = $('#TENNSX').val();
+                $.ajax({
+                    url: "/Admin/NhaSanXuatAD/UpDateNhaSanXuatAD",
+                    type: "POST",
+                    data: {ma:mansx, ten:tennsx},
+                    datatype: "Json",
+                    success: function (res) {
+                        if (res.status == true)
+                        {
+                            window.location.href = "/Admin/NhaSanXuatAD"
+                        }
+                    },
+                    error: function () {
+                        alert("error");
+                    }
+                });
+                form.submit();
+            }
+        });
+    </script>
+}
+@using Demo_Web_Mvc.Models
+@model List<NHASANXUAT>
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <!-- /.panel-heading -->
+            <div class="panel-body">
+                <a class="javascipt:; btn btn-primary" id="themnsx"> Thêm Nhà Sản Xuất</a>
+                <div class="row col-sm-offset-2 col-xs-offset-2" id="create_nsx">
+                    <form class="form-horizontal" action="" method="post" id="form_create_nsx">
+                        <div class="form-group">
+                            <label for="txtTenSP" class="col-sm-3 control-label col-xs-4">Tên Nhà Sản Xuất: </label>
+                            <div class="col-sm-4 col-xs-4">
+                                <input type="text" name="TenNhaSanXuat" id="TenNhaSanXuat" />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-6 col-sm-offset-4">
+                                <button type="submit" class="btn btn-danger luunhasanxuat">
+                                    <i class="fa fa-check"></i>&nbsp;Lưu
+                                </button>
+                                <button type="submit" class="btn btn-danger dongnhasanxuat">
+                                    <i class="fa fa-remove"></i>&nbsp;Đóng
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table-responsive">
+
+                    <table class="table table-hover" id="dataTables-example">
+                        <thead>
+                            <tr>
+                                <th>Mã Nhà Xuất</th>
+                                <th>Tên Nhà Sản Xuất</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            <tr> &nbsp;</tr>
+                        </thead>
+                        <tbody id="tbodyList">
+                            @foreach (NHASANXUAT nsx in Model)
+                            {
+                                <tr class="odd gradeX" id="load_hide_@nsx.MANSX">
+                                    <td>@nsx.MANSX</td>
+                                    <td>@nsx.TENNSX</td>
+                                    <td>
+                                        <a href="javascript:;" class="xoa_nsx" data-idmansx="@nsx.MANSX">Xóa</a> |
+                                        <a href="javascript:;" class="edit_nsx"  role="button" data-idmansx="@nsx.MANSX" data-tennsx="@nsx.TENNSX">
+                                           Chỉnh Sửa
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr class="oadd gradeX " id="nhasanxuat_ajax_@nsx.MANSX">
+
+                                </tr>
+                                
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <!-- /.table-responsive -->
+            </div>
+            <!-- /.panel-body -->
+        </div>
+        <!-- /.panel -->
+    </div>
+    <!-- /.col-lg-12 -->
+</div>
+
+
+<div class="modal fade col-lg-8" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form class="form-horizontal" method="post" action="" id="profile-from1">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title text-success" id="myModalLabel">Thay Đổi Nhà Sản Xuất </h4>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="MANSX" name="MANSX" />
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label">Nhà Sản Xuất</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" id="TENNSX" name="TENNSX">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary" id="savepass">Save changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

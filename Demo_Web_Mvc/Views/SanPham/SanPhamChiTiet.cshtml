@@ -1,0 +1,209 @@
+﻿@using Demo_Web_Mvc.Helpers;
+@using Demo_Web_Mvc.Models;
+@section view_title
+{
+    Sản Phẩm Chi Tiết
+}
+@section css
+{
+<link href="~/public/SanPhamChiTiet.css" rel="stylesheet" />
+<link href="~/assets/zoom-master/css/zoom_css.css" rel="stylesheet" />
+<link href="~/assets/bootstrap-touchspin-master/dist/jquery.bootstrap-touchspin.min.css" rel="stylesheet" />
+}
+@section js{
+<script src="~/assets/zoom-master/jquery/jquery.zoom.js"></script>
+<script src="~/assets/zoom-master/jquery/jquery.zoom.min.js"></script>
+<script src="~/assets/bootstrap-touchspin-master/dist/jquery.bootstrap-touchspin.min.js"></script>
+    <script>
+        $("#txtQ").TouchSpin(
+        {
+            min: 1,
+        });
+    </script>
+    <script>
+        $("#cart").submit(function () {
+            var soluongdat = $("#txtQ").val();
+            var soluong = $("#SoLuong").val();
+            var n = soluong - soluongdat;
+            if (n < 0 ) {
+                $("#loi_hien").removeClass('hidden');
+                $("#loi_hien").click(function () {
+                    $("#loi_hien").addClass('hidden');
+                });
+                $("#txtQ").val(soluong);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        });
+    </script>
+}
+
+<div class="row">
+    <div class="col-md-6">
+        <span class='zoom' id='hinhanh' >
+            <img id="hinhanh" src="~/hinhanh/@Model.linkanh" class="full"/>
+        </span>
+        <span><h3 style="color:red; display:block; text-align:center;"><strong>@if(Model.soluong > 0){<text>Giá : @string.Format("{0:N0},000 đ", Model.gia)</text>}else {<text> Tạm Thời Hết Hàng</text>}</strong></h3></span>
+     </div>
+    <div class="col-md-6">
+        <h2>Thông Tin Kỹ Thuật</h2>
+        <ul class="parameter">
+            <li>
+                <h3 class="text-primary text-center">@Model.tensp</h3>
+            </li>
+            <li>
+                <span> Màn hình: </span>
+                <div> @Model.manhinh</div>
+            </li>
+            <li>
+                <span> Hệ điều hành: </span>
+                <div> @Model.hdh</div>
+            </li>
+            <li>
+                <span> Camera sau: </span>
+                <div> @Model.camsau</div>
+            </li>
+            <li>
+                <span> Camera trước: </span>
+                <div>  @Model.camtruoc</div>
+            </li>
+            <li>
+                <span> CPU: </span>
+                <div> @Model.cpu</div>
+            </li>
+            <li>
+                <span> Ram: </span>
+                <div> @Model.ram</div>
+            </li>
+            <li>
+                <span> Bộ nhớ trong: </span>
+                <div> @Model.bonhotrong</div>
+            </li>
+            <li>
+                <span> Hổ trợ thẻ nhớ: </span>
+                <div> @Model.hotrothenho</div>
+            </li>
+            <li>
+                <span> Thẻ sim: </span>
+                <div> @Model.sim</div>
+            </li>
+            <li>
+                <span> Dung lượng pin: </span>
+                <div> @Model.pin</div>
+            </li>
+            <li>
+                <span> Chức năng khác: </span>
+                <div> @Model.chucnangkhac</div>
+            </li>
+            <li> <h4 class="text-primary text-center"> Có @Model.SLXem lượt xem</h4></li>
+        </ul>
+     </div>
+</div>
+
+@if (CurrentContext.IsLogged() && Model.soluong != 0)
+{
+    <form class="form-horizontal" id="cart" method="post" action="@Url.Action("Add","Cart")">
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-1">
+                <input type="hidden" name="MASP" value="@Model.spid" />
+                <input type="hidden" name="SoLuong" id="SoLuong" value="@Model.soluong" />
+                <div class="input-group  pos-demo" style="margin-left:24px;">
+                    <input id="txtQ" type="text" name="Quantity" class="form-control" value="1" />
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" id="add_cart">
+                            <i class="fa fa-cart-plus"></i>
+                        </button>
+                    </span>
+                </div>
+            </div>
+            <div class="col-lg-3 hidden" id="loi_hien">
+                <div class="alert alert-danger">
+                    <strong>Lỗi! </strong> Số lượng tối đa: @Model.soluong.
+                </div>
+            </div>
+        </div>
+    </form>
+}
+    <!--san pham cung loai-->
+<div class="row">
+    <div class="col-lg-12">
+        <p class="hieuungchu_css3">Sản phẩm cùng loại</p>
+    </div>
+    <div class="col-lg-12">
+        @Html.Action("PartialSanPhamCungLoai", "SanPham", new { masp = Model.spid, giasp = Model.gia, theloaiId = Model.TLid })
+    </div>
+   
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <p class="hieuungchu_css3_right">Sản phẩm cùng nhà sản xuất</p>
+    </div>
+    <div class="col-lg-12">
+        @Html.Action("PartialSanPhamCungNhaSanXuat", "SanPham", new { masp = Model.spid, nsx_sp = Model.nsx_id })
+    </div>
+</div>
+<hr/>
+<div class="row">
+    <div class="col-lg-12">
+        <h3><strong> Bình Luận</strong></h3>
+    </div>
+</div>
+<div class="row comment_sp_cha">
+    <div class="col-lg-12">
+        <form role="form" name="frm_binhluan" id="frm_binhluan" action="" method="post">
+            <div class="form-group">
+                @if (CurrentContext.IsLogged())
+                {
+                     <input class="name_btn_cha" type="hidden" name="tendangnhap" value="@CurrentContext.CurUser().MaTK" />
+                }
+                else
+                {
+                    <input class="name_btn_cha" type="hidden" name="tendangnhap" value="" />
+                }
+                <textarea class="form-control" rows="5" id="comment"></textarea>
+            </div>
+            <div class="form-group text-right">
+                <button type="button" class="btn btn-warning" id="btn_comment">Gửi</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="row comment_err hidden">
+    <div class="col-lg-12  text-danger text-center">
+        <h3><strong>Xin lòng đăng nhập để bình luận.</strong></h3>
+    </div>
+</div>
+<script type="text/javascript">
+    $(".tl_sp").click(function () {
+        $(".comment_sp").removeClass('hidden');
+    });
+</script>
+<script type="text/javascript">
+    $("#btn_comment").click(function () {
+        var name_cha = $("form#frm_binhluan input.name_btn_cha").val();
+        if (name_cha == "")
+            $(".comment_err").removeClass('hidden');
+        else
+        {
+           alert("Xin vui lòng đăng nhập!");
+        }
+    });
+</script>
+<script type="text/javascript">
+    
+    $(".btn_con").click(function () {
+        var name_con = $("form.frm_binhluan_con input.name_btn_con").val();
+        if (name_con == "") {
+            alert("Xin vui lòng đăng nhập!");
+        }
+        else
+        {
+            alert("Xin vui lòng đăng nhập1!");
+        }
+
+    });
+</script>
+

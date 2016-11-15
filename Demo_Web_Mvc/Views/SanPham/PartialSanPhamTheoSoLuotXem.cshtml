@@ -1,0 +1,57 @@
+﻿@using Demo_Web_Mvc.Models;
+@using Demo_Web_Mvc.Helpers;
+<link href="~/public/Sanpham.css" rel="stylesheet" />
+
+@model List<SP_CTModel>
+@if (Model.Count < 1)
+{
+    <div class="row text-center">
+        <h3>Không có sản phẩm!</h3>
+    </div>
+}
+else
+{
+    <div class="row">
+        @foreach (SP_CTModel sp in Model)
+        {
+            <div class="col-md-3 col-ms-3">
+                <ul class="products">
+                    <li>
+                        <a href="@Url.Action("SanPhamChitiet", "SanPham", new {spid_x = sp.spid})">
+                            <img src="~/hinhanh/@sp.linkanh" style="display: block;" />
+                        </a>
+                        <h3>@sp.tensp</h3>
+                        <div>
+                            <span>
+                                @string.Format("{0:N0},000 đ", sp.gia)
+                                @if (CurrentContext.IsLogged())
+                                {
+                                    if (sp.soluong > 0)
+                                    {
+                                        <a href="javascript:;" role="button" class="btn btn-success AddToCart" data-proid="@sp.spid">
+                                            <i class="fa fa-cart-plus"></i> Cart
+                                        </a>
+                                    }
+                                    else
+                                    {
+                                        <text><a href="javascript:;">Tạm Thời Hết Hàng</a></text>
+                                    }
+                                    
+
+                                }
+                            </span>
+
+                        </div>
+                        <figure class="showdescription bginfo">
+                            <h3>@sp.tensp</h3>
+                            <span>Màn hình: @sp.manhinh</span>
+                            <span>HĐH: @sp.hdh</span>
+                            <span>CPU: @sp.cpu</span>
+                            <span>Camera: @sp.camsau , @sp.sim</span><span>Pin: @sp.pin</span>
+                        </figure>
+                    </li>
+                </ul>
+            </div>
+        }
+    </div>
+}

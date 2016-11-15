@@ -1,0 +1,22 @@
+﻿
+		.zoom {
+			display:inline-block;
+			position: relative;
+		}
+		
+		/* magnifying glass icon */
+		.zoom:after {
+			content:'';
+			display:block; 
+			position:absolute;
+            width:33px; 
+			height:33px;  
+			top:0;
+			right:0;
+		}
+
+		.zoom img {
+			display: block;
+		}
+
+		.zoom img::selection { background-color: transparent; }

@@ -1,0 +1,12 @@
+﻿@using Demo_Web_Mvc.Models
+@model List<SANPHAM>
+<!-- Wrapper for slides -->
+ @foreach (SANPHAM sp in Model)
+{
+            <div class="item @if (sp.MASP == ViewBag.Max){<text>active</text>}">
+                <a href="@Url.Action("SanPhamChitiet", "SanPham", new {spid_x = sp.MASP})">
+                    <img src="~/hinhanh/@sp.Link" style=" height:400px;" class="img-responsive center-block" />
+                </a>
+                <h3 class="text-center" style="color:red;">@sp.TENSP</h3>
+            </div>
+ }
